@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/1 - API/">
+    <Project Path="CatalogoService.API/CatalogoService.API.csproj" />
+  </Folder>
+  <Folder Name="/2 - Domain/">
+    <Project Path="CatalogoService.Domain/CatalogoService.Domain.csproj" />
+  </Folder>
+  <Folder Name="/3 - Application/">
+    <Project Path="CatalogoService.Application/CatalogoService.Application.csproj" />
+  </Folder>
+  <Folder Name="/4 - Infrastructure/">
+    <Project Path="CatalogoService.Infrastructure/CatalogoService.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/5 - Tests/" />
+</Solution>
