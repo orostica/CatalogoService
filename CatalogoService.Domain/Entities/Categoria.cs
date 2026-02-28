@@ -11,6 +11,8 @@ namespace CatalogoService.Domain.Entities
         public string Nome { get; set; } = string.Empty;
         public string? Descricao {  get; set; }
 
+        public ICollection<Produto> Produtos { get; private set; } = new List<Produto>();
+
         private Categoria() { }
 
         public static Categoria Create(string nome, string? descricao = null)

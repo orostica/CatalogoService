@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CatalogoService.Infrastructure.Repositories
 {
-    internal class CategoriaRepository(CatalogoDbContext context) : BaseRepository<Categoria>(context), ICategoriaRepository
+    public class CategoriaRepository(CatalogoDbContext context) : BaseRepository<Categoria>(context), ICategoriaRepository
     {
         public async Task<IEnumerable<Categoria>> SearchAsync(string searchTerm, CancellationToken cancellationToken = default)
             => await DbSet

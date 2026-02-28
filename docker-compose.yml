@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: lf_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - lf_catalogo_postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGAMDIN_USER}
+      PGADMIN_DEFAULT_PASSWORD: ${PGAMDIN_PASSWORD}
+    ports:
+      - "${PGAMDIN_PORT}:80"
+    depends_on:
+      - postgres
+
+volumes:
+  lf_catalogo_postgres_data:

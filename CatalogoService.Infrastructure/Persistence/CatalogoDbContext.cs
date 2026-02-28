@@ -9,8 +9,8 @@ namespace CatalogoService.Infrastructure.Persistence
 {
     public class CatalogoDbContext(DbContextOptions<CatalogoDbContext> options) : DbContext(options)
     {
-        public DbSet<Produto> Books => Set<Produto>();
-        public DbSet<Categoria> Categories => Set<Categoria>();
+        public DbSet<Produto> Produtos => Set<Produto>();
+        public DbSet<Categoria> Categorias => Set<Categoria>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
