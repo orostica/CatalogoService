@@ -1,6 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using CatalogService.API; // onde está o IocConfiguration
+using CatalogService.API;
 using CatalogoService.Infrastructure.Messaging.Consumers;
 using Messaging.Contracts;
 using CatalogoService.Infrastructure.Persistence;
