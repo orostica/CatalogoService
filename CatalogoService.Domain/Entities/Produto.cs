@@ -58,5 +58,10 @@ namespace CatalogoService.Domain.Entities
             SetAtualizadoEm();
         }
 
+        public void Disponibilizar()
+        {
+            Status = ProdutoStatus.Disponivel;
+            SetAtualizadoEm();
+        }
     }
 }

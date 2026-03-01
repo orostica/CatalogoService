@@ -14,5 +14,8 @@ namespace CatalogoService.Application.Interfaces
         Task<ProdutoDto> CreateAsync(CriarProdutoDto dto, CancellationToken cancellationToken = default);
         Task<ProdutoDto?> UpdateAsync(Guid id, AtualizarProdutoDto dto, CancellationToken cancellationToken = default);
         Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<bool> ReservarAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<bool> IndisponibilizarAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<bool> DisponibilizarAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }

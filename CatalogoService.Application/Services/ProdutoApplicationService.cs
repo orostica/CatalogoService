@@ -63,7 +63,7 @@ namespace CatalogoService.Application.Services
                 dto.Preco,
                 dto.CategoriaId,
                 dto.Descricao,
-                dto.CoverImageUrl);
+                dto.ImagemUrl);
 
             await _produtoRepository.UpdateAsync(produto, cancellationToken);
             return MapToDto(produto);
@@ -77,6 +77,36 @@ namespace CatalogoService.Application.Services
             await _produtoRepository.DeleteAsync(produto, cancellationToken);
             return true;
         }
+        public async Task<bool> ReservarAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var produto = await _produtoRepository.GetByIdAsync(id, cancellationToken);
+            if (produto is null) return false;
+
+            produto.Reservar();
+            await _produtoRepository.UpdateAsync(produto, cancellationToken);
+            return true;
+        }
+
+        public async Task<bool> IndisponibilizarAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var produto = await _produtoRepository.GetByIdAsync(id, cancellationToken);
+            if (produto is null) return false;
+
+            produto.Indisponibilizar();
+            await _produtoRepository.UpdateAsync(produto, cancellationToken);
+            return true;
+        }
+
+        public async Task<bool> DisponibilizarAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var produto = await _produtoRepository.GetByIdAsync(id, cancellationToken);
+            if (produto is null) return false;
+
+            produto.Disponibilizar();
+            await _produtoRepository.UpdateAsync(produto, cancellationToken);
+            return true;
+        }
+
         private static ProdutoDto MapToDto(Produto produto) =>
             new(produto.Id,
                 produto.Nome,
