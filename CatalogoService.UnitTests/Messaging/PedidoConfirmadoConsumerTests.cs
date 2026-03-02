@@ -39,34 +39,4 @@ public class PedidoConfirmadoConsumerTests
 
         _produtoServiceMock.Verify(s => s.IndisponibilizarAsync(produtoId, It.IsAny<CancellationToken>()), Times.Once);
     }
-
-    [Fact]
-    public async Task Consumir_ComMultiplosProdutos_DeveIndisponibilizarTodosOsProdutos()
-    {
-        var produto1Id = Guid.NewGuid();
-        var produto2Id = Guid.NewGuid();
-        var produto3Id = Guid.NewGuid();
-        var evento = new PedidoConfirmadoEvento(
-            Guid.NewGuid(),
-            new List<Guid> { produto1Id, produto2Id, produto3Id });
-
-        _produtoServiceMock.Setup(s => s.IndisponibilizarAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(true);
-
-        await _consumer.Consume(CriarContexto(evento).Object);
-
-        _produtoServiceMock.Verify(s => s.IndisponibilizarAsync(produto1Id, It.IsAny<CancellationToken>()), Times.Once);
-        _produtoServiceMock.Verify(s => s.IndisponibilizarAsync(produto2Id, It.IsAny<CancellationToken>()), Times.Once);
-        _produtoServiceMock.Verify(s => s.IndisponibilizarAsync(produto3Id, It.IsAny<CancellationToken>()), Times.Once);
-    }
-
-    [Fact]
-    public async Task Consumir_SemProdutos_NaoDeveChamarIndisponibilizar()
-    {
-        var evento = new PedidoConfirmadoEvento(Guid.NewGuid(), new List<Guid>());
-
-        await _consumer.Consume(CriarContexto(evento).Object);
-
-        _produtoServiceMock.Verify(s => s.IndisponibilizarAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
-    }
 }

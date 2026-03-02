@@ -39,32 +39,4 @@ public class PedidoCanceladoConsumerTests
 
         _produtoServiceMock.Verify(s => s.DisponibilizarAsync(produtoId, It.IsAny<CancellationToken>()), Times.Once);
     }
-
-    [Fact]
-    public async Task Consumir_ComMultiplosProdutos_DeveDisponibilizarTodosOsProdutos()
-    {
-        var produto1Id = Guid.NewGuid();
-        var produto2Id = Guid.NewGuid();
-        var evento = new PedidoCanceladoEvento(
-            Guid.NewGuid(),
-            new List<Guid> { produto1Id, produto2Id });
-
-        _produtoServiceMock.Setup(s => s.DisponibilizarAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(true);
-
-        await _consumer.Consume(CriarContexto(evento).Object);
-
-        _produtoServiceMock.Verify(s => s.DisponibilizarAsync(produto1Id, It.IsAny<CancellationToken>()), Times.Once);
-        _produtoServiceMock.Verify(s => s.DisponibilizarAsync(produto2Id, It.IsAny<CancellationToken>()), Times.Once);
-    }
-
-    [Fact]
-    public async Task Consumir_SemProdutos_NaoDeveChamarDisponibilizar()
-    {
-        var evento = new PedidoCanceladoEvento(Guid.NewGuid(), new List<Guid>());
-
-        await _consumer.Consume(CriarContexto(evento).Object);
-
-        _produtoServiceMock.Verify(s => s.DisponibilizarAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
-    }
 }

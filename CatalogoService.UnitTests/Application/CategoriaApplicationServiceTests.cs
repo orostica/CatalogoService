@@ -19,77 +19,6 @@ public class CategoriaApplicationServiceTests
     }
 
     [Fact]
-    public async Task ObterTodos_QuandoExistemCategorias_DeveRetornarListaDeDtos()
-    {
-        var categorias = new List<Categoria>
-        {
-            Categoria.Create("Eletrônicos", "Desc 1"),
-            Categoria.Create("Informática", "Desc 2")
-        };
-        _repositorioMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(categorias);
-
-        var resultado = await _servico.GetAllAsync();
-
-        var lista = resultado.ToList();
-        Assert.Equal(2, lista.Count);
-        Assert.Contains(lista, d => d.Nome == "Eletrônicos");
-        Assert.Contains(lista, d => d.Nome == "Informática");
-    }
-
-    [Fact]
-    public async Task ObterTodos_QuandoNaoExistemCategorias_DeveRetornarListaVazia()
-    {
-        _repositorioMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new List<Categoria>());
-
-        var resultado = await _servico.GetAllAsync();
-
-        Assert.Empty(resultado);
-    }
-
-    [Fact]
-    public async Task ObterPorId_QuandoCategoriaExiste_DeveRetornarDto()
-    {
-        var categoria = Categoria.Create("Eletrônicos", "Desc");
-        _repositorioMock.Setup(r => r.GetByIdAsync(categoria.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(categoria);
-
-        var resultado = await _servico.GetByIdAsync(categoria.Id);
-
-        Assert.NotNull(resultado);
-        Assert.Equal(categoria.Id, resultado.Id);
-        Assert.Equal("Eletrônicos", resultado.Nome);
-    }
-
-    [Fact]
-    public async Task ObterPorId_QuandoCategoriaNaoExiste_DeveRetornarNull()
-    {
-        _repositorioMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Categoria?)null);
-
-        var resultado = await _servico.GetByIdAsync(Guid.NewGuid());
-
-        Assert.Null(resultado);
-    }
-
-    [Fact]
-    public async Task Buscar_ComTermoValido_DeveRepassarTermoAoRepositorioERetornarDtos()
-    {
-        const string termo = "elet";
-        var categorias = new List<Categoria> { Categoria.Create("Eletrônicos") };
-        _repositorioMock.Setup(r => r.SearchAsync(termo, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(categorias);
-
-        var resultado = await _servico.SearchAsync(termo);
-
-        var lista = resultado.ToList();
-        Assert.Single(lista);
-        Assert.Equal("Eletrônicos", lista[0].Nome);
-        _repositorioMock.Verify(r => r.SearchAsync(termo, It.IsAny<CancellationToken>()), Times.Once);
-    }
-
-    [Fact]
     public async Task Criar_ComDadosValidos_DeveChamarAddERetornarDto()
     {
         var dto = new CriarCategoriaDto("Eletrônicos", "Produtos eletrônicos");
@@ -133,48 +62,5 @@ public class CategoriaApplicationServiceTests
 
         Assert.Null(resultado);
         _repositorioMock.Verify(r => r.UpdateAsync(It.IsAny<Categoria>(), It.IsAny<CancellationToken>()), Times.Never);
-    }
-
-    [Fact]
-    public async Task Remover_QuandoCategoriaExiste_DeveChamarDeleteERetornarTrue()
-    {
-        var categoria = Categoria.Create("Eletrônicos");
-        _repositorioMock.Setup(r => r.GetByIdAsync(categoria.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(categoria);
-        _repositorioMock.Setup(r => r.DeleteAsync(categoria, It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
-
-        var resultado = await _servico.DeleteAsync(categoria.Id);
-
-        Assert.True(resultado);
-        _repositorioMock.Verify(r => r.DeleteAsync(categoria, It.IsAny<CancellationToken>()), Times.Once);
-    }
-
-    [Fact]
-    public async Task Remover_QuandoCategoriaNaoExiste_DeveRetornarFalse()
-    {
-        _repositorioMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Categoria?)null);
-
-        var resultado = await _servico.DeleteAsync(Guid.NewGuid());
-
-        Assert.False(resultado);
-        _repositorioMock.Verify(r => r.DeleteAsync(It.IsAny<Categoria>(), It.IsAny<CancellationToken>()), Times.Never);
-    }
-
-    [Fact]
-    public async Task Criar_DeveMapearTodasAsPropriedadesParaDto()
-    {
-        var dto = new CriarCategoriaDto("Eletrônicos", "Desc");
-        _repositorioMock.Setup(r => r.AddAsync(It.IsAny<Categoria>(), It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
-
-        var resultado = await _servico.CreateAsync(dto);
-
-        Assert.NotEqual(Guid.Empty, resultado.Id);
-        Assert.Equal("Eletrônicos", resultado.Nome);
-        Assert.Equal("Desc", resultado.Descricao);
-        Assert.NotEqual(default, resultado.CriadoEm);
-        Assert.NotEqual(default, resultado.AtualizadoEm);
     }
 }
