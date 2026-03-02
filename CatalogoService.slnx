@@ -11,5 +11,8 @@
   <Folder Name="/4 - Infrastructure/">
     <Project Path="CatalogoService.Infrastructure/CatalogoService.Infrastructure.csproj" />
   </Folder>
-  <Folder Name="/5 - Tests/" />
+  <Folder Name="/5 - Tests/">
+    <Project Path="CatalogoService.IntegrationTests/CatalogoService.IntegrationTests.csproj" />
+    <Project Path="CatalogoService.UnitTests/CatalogoService.UnitTests.csproj" />
+  </Folder>
 </Solution>
